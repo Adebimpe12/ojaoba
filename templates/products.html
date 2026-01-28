@@ -1,0 +1,35 @@
+{% extends "common.html" %}
+    {% block title %} Ojaoba-products {% endblock title %}
+    {% block content %}
+    {% load static %}
+    {% load humanize %}
+    
+    <div class="container my-4">
+        <div class="text-center py-2 h3">All Products</div>
+        <a href="{% url 'add_product' %}" class='btn btn-sm btn-dark mb-2'>Add product</a>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-3 my-2">
+                <a href="{% url "get_product" product.product_id %}" class="text-black text-decoration-none">
+                    <div class="card">
+                        {% if product.images.all %}
+                                <img class="card-img-top" src="{{product.images.all.first.image.url}}" alt="{{product.title}}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.title|title}}</h5>
+                            <p class="card-text my-1">{{product.description|truncatewords:"5"}}</p>
+                            <p class="my-1"><i><b>Price</b>: </i>#{{product.price|intcomma}}</p>
+                            <p class="my-1"><i><b>Last Updated</b>: </i> {{product.updated_at|naturalday|title}}</p>
+                            <p><i><b>Category</b>: </i> {{product.category|title}}</p>
+
+                            <a href="#" class="btn btn-sm btn-dark">Add to cart</a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    
+    {% endblock content %}

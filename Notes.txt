@@ -1,0 +1,26 @@
+DJANGO NOTES
+
+1. DateTime Fields
+- auto_now       -> updates to current time every time object is saved
+- auto_now_add   -> sets to current time only when object is first created
+
+2. QuerySets
+- QuerySet = list of objects from your database
+- Use queries to filter, order, or select specific fields from the database
+
+3. Forms
+- Form types:
+    - text   -> for text input
+    - button -> for buttons
+- Form attributes:
+    - action -> where the form will submit (which view it calls)
+    - method -> POST (secure) or GET
+    - enctype -> multipart/form-data (needed for images/files)
+    - csrf_token -> always include this
+    - value  -> the input data typed by the user
+    - name   -> unique identifier for each input
+
+4. Form Classes
+- forms.Form       -> customize each field yourself
+- forms.ModelForm  -> form automatically generated from a model
+- widget           -> controls styling & behavior of input fields (like placeholder, type, class, etc.)
