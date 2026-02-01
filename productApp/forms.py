@@ -13,7 +13,7 @@ class ProductForm(forms.ModelForm):
         ]
         
         
-class ImageForm(forms.Form):
+class ImageForm(forms.ModelForm):
     image = forms.ImageField()
     class Meta:
         model = ProductImage

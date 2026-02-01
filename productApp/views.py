@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from .models import Product, ProductFeatures
 from django.shortcuts import get_object_or_404, redirect
-from .forms import ProductForm, ImageForm, FeatureForm
+from .forms import ProductForm, ImageForm, FeatureForm, ProductImage
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 # Create your views here.
 # products =[
@@ -138,8 +139,14 @@ def addImage(request, product_id):
         request,
         template_name='product_form.html',
         context={'form':form,
-                 'title':'Upload Image'}
+                 'title':'Upload Image',
+                 'product':product}
     )
+    
+    
+    
+
+    
     
 @login_required   
 def addFeature(request, product_id):
@@ -184,6 +191,34 @@ def editProduct(request, product_id):
     
 @login_required
 def deleteProduct(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, product_id=product_id)
     product.delete()
-    return redirect("products")
+    return redirect('products')
+
+@login_required 
+def deleteImage(request, product_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("You are not allowed to delete this image.")
+    
+    product = get_object_or_404(Product, product_id=product_id)
+    if request.method == 'POST':
+        image_id = request.POST.get('image_id')
+        image = get_object_or_404(ProductImage, pk=image_id)
+        image.delete()
+    return redirect('get_product', product_id)
+
+
+@login_required 
+def deleteFeature(request, product_id): 
+    if not request.user.is_staff:
+        return HttpResponseForbidden("You are not allowed to delete this feature.")
+    
+    product = get_object_or_404(Product, product_id=product_id)
+    if request.method == 'POST':
+        feature_id = request.POST.get('feature_id')
+        feature = get_object_or_404(ProductFeatures, pk=feature_id)
+        feature.delete()
+    return redirect('get_product', product_id)
+
+
+    
